@@ -1,60 +1,56 @@
 # ugv01-x3-obstacle-avoidance
 Simple floor-color + edge based obstacle avoidance for Waveshare UGV01-X3 (RPi 5 + ESP32 + Pi Camera)
 
-Simple autonomous obstacle avoidance based on floor color difference and edge detection  
-for **Waveshare UGV01-X3** tracked robot chassis.
+# ugv01-x3-obstacle-avoidance
 
-Runs on **Raspberry Pi 5** + **ESP32-WROOM** (General Driver for Robots firmware) + **Raspberry Pi Camera**.
+Simple floor-color + edge based obstacle avoidance for the Waveshare UGV01-X3 tracked robot.
 
-## Project Description
+This script lets the robot drive around autonomously on Raspberry Pi 5 + ESP32 (General Driver for Robots firmware) + Pi Camera.  
+It avoids obstacles by looking at the color of the floor and detecting edges in the lower part of the camera view.
 
-The robot:
-- Calibrates floor color (slow forward movement ~1.4 seconds)
-- Analyzes the lower part of the camera frame (HSV difference from calibrated floor + Canny edges)
-- Drives forward at medium speed
-- Stops and turns when detecting obstacles, edges, or dark areas
-- Includes corner escape mode (micro-turns + backward movement)
+## How the robot works
 
-Control is done via UART (`/dev/ttyAMA0`, 115200 baud) using the same JSON commands as in the official web interface:  
-**UGV01_BASE_WEB** → http://192.168.4.1 (AP mode) or local IP in STA mode.
+- First it calibrates the floor color — drives slowly forward for about 1.4 seconds.
+- Then it keeps checking the bottom third of the camera image: compares HSV colors to the calibrated floor and looks for edges with Canny.
+- If everything looks clear — goes straight at medium speed.
+- If it sees something different (obstacle, edge, dark spot) — stops and turns.
+- If it gets stuck in a corner — switches to a special mode with small turns and occasional reverse to get out.
 
-## Hardware Requirements
+Commands are sent over UART (/dev/ttyAMA0, 115200 baud) — exactly the same JSON format you see in the official web control page (UGV01_BASE_WEB at http://192.168.4.1 in AP mode or local IP in STA).
 
-- Waveshare **UGV01-X3** tracked chassis (with suspension)
-- **Raspberry Pi 5** (installed as the upper computer)
-- **ESP32-WROOM-32** (lower controller with General Driver for Robots firmware)
-- **Raspberry Pi Camera Module** (CSI connection, fixed forward-facing — mandatory!)
-- 3×18650 battery pack (or external power)
-- UART connection: Raspberry Pi GPIO UART → ESP32 (usually `/dev/ttyAMA0`)
+## What hardware you need
 
-**Important about the camera**:  
-The camera must be mounted **front-facing and looking forward** (not downward or upward).  
-If you have a pan-tilt gimbal with bus servos — this script does **not** control it (can be added later).
+- Waveshare UGV01-X3 tracked chassis (the one with good suspension)
+- Raspberry Pi 5 (as the main brain)
+- ESP32-WROOM-32 running General Driver for Robots firmware
+- Raspberry Pi Camera (CSI port) — must be mounted on the front and looking straight forward (this is required!)
+- 3×18650 batteries or some external power
+- UART connection from Pi GPIO to ESP32 (usually /dev/ttyAMA0)
 
-## Preparation (one-time setup on Raspberry Pi)
+Note about the camera:  
+It has to point forward. If you have a pan-tilt mount with servos — this script doesn't touch them. You can control servos separately through the web page or JSON commands if you want.
 
-1. Install **Raspberry Pi OS Bookworm 64-bit** (Desktop or Lite recommended).
-2. Enable UART and camera:
-   sudo raspi-config
-   - Interface Options  
-- Serial Port → No (login shell) → Yes (hardware port)  
-- Camera → Enable  
-- Finish → Reboot
+## One-time setup on Raspberry Pi
 
-3. Update system: sudo apt update && sudo apt upgrade -y
-   
-## Library Installation
+Install Raspberry Pi OS Bookworm 64-bit (Desktop or Lite — both work).
 
-Run these commands in order:
+Then run: sudo raspi-config
+Go to Interface Options:
+- Serial Port → turn off login shell, turn on hardware port
+- Camera → Enable
+Finish and reboot.
+
+Update everything: sudo apt update && sudo apt upgrade -y
+
+Install system packages (recommended for camera and OpenCV on Raspberry Pi): 
+sudo apt update
+sudo apt install -y python3-picamera2 python3-opencv python3-numpy python3-serial
+
+## Installing libraries
+
+Just run these two blocks:
 
 ```bash
-# 1. Install system packages (recommended for compatibility with Pi Camera & OpenCV)
+# System packages — this is the reliable way for camera and OpenCV on Pi
 sudo apt update
-sudo apt install -y \
- python3-picamera2 \
- python3-opencv \
- python3-numpy \
- python3-serial
-
-# 2. Install the only pip package needed
-pip3 install pyserial
+sudo apt install -y python3-picamera2 python3-opencv python3-numpy python3-serial
