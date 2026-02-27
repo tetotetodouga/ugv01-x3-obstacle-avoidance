@@ -54,9 +54,9 @@ Just run these two blocks:
 # System packages — this is the reliable way for camera and OpenCV on Pi
 sudo apt update
 sudo apt install -y python3-picamera2 python3-opencv python3-numpy python3-serial
-
+```
 Quick Start (Installation & Run)
-git clone https://github.com/твой-репо/ugv01-x3-obstacle-avoidance.git
+git clone https://github.com/tetotetodouga/ugv01-x3-obstacle-avoidance.git
 cd ugv01-x3-obstacle-avoidance
 
 sudo apt update
