@@ -14,7 +14,7 @@ The JSON format is the same one used by the official UGV01 web control page (UGV
 
 ## System architecture
 
-Pi Camera -> Raspberry Pi (OpenCV processing) -> UART -> ESP32 (driver firmware) -> motors/tracks
+Camera -> Raspberry Pi (OpenCV processing) -> UART -> ESP32 (driver firmware) -> motors/tracks
 
 ## Limitations
 
