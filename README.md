@@ -2,7 +2,7 @@
 
 Simple floor-color + edge based obstacle avoidance for Waveshare UGV01 (RPi 5 + ESP32 + Pi Camera)
 
-This repo contains a small Python script that lets the UGV01- drive around autonomously using only a single Pi Camera.
+This repo contains a small Python script that lets the UGV01 drive around autonomously using only a single Pi Camera.
 It detects “not floor” areas and edges in the lower part of the image, then stops/turns to avoid obstacles.
 
 Control commands are sent from Raspberry Pi to the ESP32 over UART (`/dev/ttyAMA0`, `115200` baud).
