@@ -1,8 +1,8 @@
-# ugv01-x3-obstacle-avoidance
+# ugv01-obstacle-avoidance
 
-Simple floor-color + edge based obstacle avoidance for Waveshare UGV01-X3 (RPi 5 + ESP32 + Pi Camera)
+Simple floor-color + edge based obstacle avoidance for Waveshare UGV01 (RPi 5 + ESP32 + Pi Camera)
 
-This repo contains a small Python script that lets the UGV01-X3 drive around autonomously using only a single Pi Camera.
+This repo contains a small Python script that lets the UGV01- drive around autonomously using only a single Pi Camera.
 It detects “not floor” areas and edges in the lower part of the image, then stops/turns to avoid obstacles.
 
 Control commands are sent from Raspberry Pi to the ESP32 over UART (`/dev/ttyAMA0`, `115200` baud).
@@ -10,7 +10,7 @@ The JSON format is the same one used by the official UGV01 web control page (UGV
 
 ## Hardware photo
 
-![UGV01-X3 robot setup](media/robot_ugv01.jpg)
+![UGV01 robot setup](media/robot_ugv01.jpg)
 
 ## How the robot works
 
@@ -25,7 +25,7 @@ Then it runs a loop:
 
 ## Hardware
 
-- Waveshare UGV01-X3 tracked chassis
+- Waveshare UGV01 tracked chassis
 - Raspberry Pi 5
 - ESP32-WROOM-32 running General Driver for Robots firmware
 - Raspberry Pi CSI Camera mounted on the front, looking straight forward
@@ -69,8 +69,8 @@ sudo apt install -y python3-picamera2 python3-opencv python3-numpy python3-seria
 ## Quick Start
 
 ```bash
-git clone https://github.com/tetotetodouga/ugv01-x3-obstacle-avoidance.git
-cd ugv01-x3-obstacle-avoidance
+git clone https://github.com/tetotetodouga/ugv01-obstacle-avoidance.git
+cd ugv01-obstacle-avoidance
 python3 avoid_obstacle.py
 ```
 
