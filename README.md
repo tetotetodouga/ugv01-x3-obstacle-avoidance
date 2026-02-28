@@ -101,3 +101,109 @@ Canny edge count threshold (sides): EDGE_THR_SIDE = 1400
 
 If detection is too sensitive → increase thresholds slightly.
 If the robot misses obstacles → decrease thresholds slightly.
+
+## UART Check (Recommended)
+
+After a reboot, it’s a good idea to confirm that the UART device exists and that your user has permission to use it.
+
+### 1) Check that your user is in the `dialout` group
+```bash
+groups
+```
+If you don’t see dialout, add it (see Permission denied below).
+### 2) Check that the serial devices exist
+```bash
+ls -l /dev/ttyAMA0
+ls -l /dev/serial0
+```
+If UART is set up correctly, at least one of these devices should exist and be accessible by your user.
+### Camera Troubleshooting
+rpicam-hello does not start
+
+## Possible causes
+
+Camera is not connected
+
+Ribbon cable is inserted the wrong way
+
+Camera is disabled in Raspberry Pi settings
+
+## Fix
+
+Reseat the camera connector and cable
+
+Make sure the ribbon cable contacts face the correct direction
+
+Reboot the Raspberry Pi
+
+## Image works, but the Python script can’t access the camera
+
+Fix
+
+Ensure picamera2 is installed:
+```bash
+sudo apt install python3-picamera2
+```
+Make sure the camera is not being used by another app at the same time (only one process can use it)
+### Python Script Troubleshooting
+ModuleNotFoundError
+
+## Cause: a required library is missing.
+
+## Fix: install the missing package (example):
+```bash
+sudo apt install python3-<package-name>
+```
+Permission denied when opening the serial port
+
+## Cause: your user does not have access to UART.
+
+## Fix:
+```bash
+sudo usermod -a -G dialout $USER
+sudo reboot
+```
+### Robot moves incorrectly
+
+## Possible causes
+
+Wrong serial port selected
+
+Wrong baud rate / serial settings
+
+Obstacle detection thresholds/ROI are not tuned for your environment
+
+## Fix
+
+Try /dev/serial0 instead of /dev/ttyAMA0
+
+Re-check wiring/connection between Raspberry Pi and the robot controller
+
+Re-run and tune calibration/thresholds in the script
+### UART Not Working (Robot Ignores Commands)
+## Robot does not move after starting the program
+
+## Possible causes
+
+User permissions not set (not in dialout)
+
+Serial Port is disabled in raspi-config
+
+Wrong port selected
+
+## Fix checklist
+
+Confirm your user is in dialout:
+```bash
+groups
+```
+Confirm UART devices exist:
+```bash
+ls /dev/ttyAMA0
+ls /dev/serial0
+```
+In raspi-config, make sure:
+
+Serial console over UART is disabled
+
+Serial Port hardware is enabled
