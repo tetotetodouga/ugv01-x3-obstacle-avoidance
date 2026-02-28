@@ -77,7 +77,7 @@ time.sleep(0.15)
 floor_mean = np.median(samples, axis=0) 
 print("Floor calibrated.") 
  
-# ======= ДИАГНОСТИКА: гарантированно поехать 1 сек ======= 
+# ======= DIAGNOSTICS: guaranteed to drive for 1 second =======
 print("DIAG: driving forward 1s to verify motors...") 
 send(0.20, 0.20) 
 time.sleep(1.0) 
@@ -94,7 +94,7 @@ def edge(box, gray_img):
     e = cv2.Canny(g, 60, 150) 
     return int(np.sum(e > 0)) 
  
-# Пороги (если он всегда считает, что впереди стена — поднимем эти пороги) 
+# Thresholds (if it always thinks there’s a wall ahead, we’ll raise these thresholds).
 DIFF_THR_CENTER = 25.0 
 DIFF_THR_SIDE   = 25.0 
 EDGE_THR_CENTER = 1800 
