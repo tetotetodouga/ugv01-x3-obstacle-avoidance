@@ -63,3 +63,41 @@ sudo apt update
 sudo apt install -y python3-opencv python3-picamera2 python3-numpy python3-serial
 
 python3 avoid_obstacle.py
+## Calibration & Tuning
+
+### 1) Floor calibration (HSV)
+On startup, the robot performs an automatic floor calibration:
+- Captures ~35 HSV samples from a small center patch
+- Slowly drives forward for ~1.4 seconds during sampling
+- Uses the average HSV as the "floor color" reference
+
+### 2) Region of Interest (ROI)
+Obstacle detection is done in the lower part of the frame:
+
+```python
+y0 = int(h * 0.78)  # top boundary of ROI (default: 78% of frame height)
+y1 = int(h * 0.95)  # bottom boundary of ROI (default: 95% of frame height)
+```
+If low obstacles are missed → lower y0 (e.g. 0.70–0.75)
+
+If there are many false positives from the floor → raise y0 (e.g. 0.82–0.85)
+
+3) Floor calibration patch (center sample area)
+
+HSV patch used for floor calibration: patch = hsv[int(h * 0.90):int(h * 0.95), int(w * 0.46):int(w * 0.54)]
+You can narrow/widen this patch if the floor is patterned, reflective, or non-uniform.
+
+4) Detection thresholds
+
+Sensitivity is controlled by these parameters:
+
+Color difference threshold (center): DIFF_THR_CENTER = 25.0
+
+Color difference threshold (sides): DIFF_THR_SIDE = 25.0
+
+Canny edge count threshold (center): EDGE_THR_CENTER = 1800
+
+Canny edge count threshold (sides): EDGE_THR_SIDE = 1400
+
+If detection is too sensitive → increase thresholds slightly.
+If the robot misses obstacles → decrease thresholds slightly.
