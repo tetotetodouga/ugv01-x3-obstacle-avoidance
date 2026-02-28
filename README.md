@@ -82,12 +82,12 @@ If low obstacles are missed → lower y0 (e.g. 0.70–0.75)
 
 If there are many false positives from the floor → raise y0 (e.g. 0.82–0.85)
 
-3) Floor calibration patch (center sample area)
+### 3) Floor calibration patch (center sample area)
 
 HSV patch used for floor calibration: patch = hsv[int(h * 0.90):int(h * 0.95), int(w * 0.46):int(w * 0.54)]
 You can narrow/widen this patch if the floor is patterned, reflective, or non-uniform.
 
-4) Detection thresholds
+### 4) Detection thresholds
 
 Sensitivity is controlled by these parameters:
 
