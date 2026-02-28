@@ -12,6 +12,17 @@ The JSON format is the same one used by the official UGV01 web control page (UGV
 
 ![UGV01 robot setup](media/robot_ugv01.jpg)
 
+## System architecture
+
+Pi Camera -> Raspberry Pi (OpenCV processing) -> UART -> ESP32 (driver firmware) -> motors/tracks
+
+## Limitations
+
+- Uses a single monocular camera (no depth sensing)
+- Sensitive to lighting changes and floor texture
+- Works best on a mostly uniform floor surface
+- Thin or low obstacles may not be detected reliably
+
 ## How the robot works
 
 At startup the script calibrates the floor color: the robot moves forward slowly for ~1.4 seconds and takes ~35 HSV samples from a small patch near the bottom-center of the frame. The average HSV becomes the “floor reference”, so it adapts to your lighting and surface.
