@@ -8,6 +8,10 @@ It detects “not floor” areas and edges in the lower part of the image, then 
 Control commands are sent from Raspberry Pi to the ESP32 over UART (`/dev/ttyAMA0`, `115200` baud).
 The JSON format is the same one used by the official UGV01 web control page (UGV01_BASE_WEB).
 
+## Hardware photo
+
+![UGV01-X3 robot setup](media/robot_ugv01.jpg)
+
 ## How the robot works
 
 At startup the script calibrates the floor color: the robot moves forward slowly for ~1.4 seconds and takes ~35 HSV samples from a small patch near the bottom-center of the frame. The average HSV becomes the “floor reference”, so it adapts to your lighting and surface.
